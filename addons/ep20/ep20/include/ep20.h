@@ -27,6 +27,8 @@
 #include    "ep20-brake-mech.h"
 #include    "kmb2.h"
 #include    "traction-drive.h"
+#include    "ept-converter.h"
+#include    "ept-pass-control.h"
 
 /*!
  * \class
@@ -118,6 +120,17 @@ private:
     /// Воздухораспределитель (ВР)
     AirDistributor  *airDistr;
 
+
+    /// Тумблер включения ЭПТ
+    Trigger         ept_switch;
+
+    /// Источник питания ЭПТ
+    EPTConverter    *ept_converter;
+
+    /// Блок управления ЭПТ
+    EPTPassControl  *      ept_pass_control;
+
+
     /// Электро-воздухораспределитель (ЭВР)
     ElectroAirDistributor   *electroAirDistr;
 
@@ -162,6 +175,9 @@ private:
     /// Инициализация тягового привода
     void initTractionDrive();
 
+    /// Инициализация ЭПТ
+    void initEPT();
+
     /// Шаг моделирования всех систем локомотива в целом
     void step(double t, double dt);
 
@@ -179,6 +195,9 @@ private:
 
     /// Шаг моделирования тягового привода
     void stepTractionDrive(double t, double dt);
+
+    ///Шаг моделирования ЭПТ
+    void stepEPT(double t, double dt);
 
     /// Загрузка данных из конфигурационных файлов
     void loadConfig(QString cfg_path);

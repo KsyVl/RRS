@@ -42,6 +42,8 @@ void EP20::initialization()
     initKMB2();
 
     initTractionDrive();
+
+    initEPT();
 }
 
 //------------------------------------------------------------------------------
@@ -178,6 +180,26 @@ void EP20::initBrakeDevices(double p0, double pTM, double pFL)
 }
 
 //------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+void EP20::initEPT()
+{
+    // Инициализация линии управления
+    ept_control.resize(1);
+    ept_current.resize(1);
+
+    ept_control[0] = ept_current[0] = 0.0;
+
+    // Инициализация источника питания
+    ept_converter = new EPTConverter();
+    ept_converter->read_config("ept-converter");
+
+    // Инциализация блока управления
+    ept_pass_control = new EPTPassControl();
+}
+
+
+//------------------------------------------------------------------------------
 // Общие шаги моделирования
 //------------------------------------------------------------------------------
 void EP20::step(double t, double dt)
@@ -193,6 +215,12 @@ void EP20::step(double t, double dt)
     stepKMB2(t, dt);
 
     stepTractionDrive(t, dt);
+
+
+    stepEPT(t, dt);
+
+
+
 
 //     Выводим на экран симулятор, высоту подъема/спуска, выходное напряжение, род ток!
 //    DebugMsg = QString("t: %1 s, U2_4: %2, Q: %3, pUR: %4, pTM: %5, KrM: %6, pTC_2: %7, pTC_1: %8 pZR: %9 pos: %10 trac_pos: %11")
@@ -370,6 +398,7 @@ void EP20::stepBrakeControls(double t, double dt)
     krm->setControl(keys);
     krm->step(t, dt);
 
+
     p0 = krm->getBrakePipeInitPressure();
 
     kvt->setFeedlinePressure(main_reservoir->getPressure());
@@ -483,6 +512,11 @@ void EP20::stepTractionDrive(double t, double dt)
     Q_a[6] = tractionDrive[2]->getTorque(1);
 }
 
+void EP20::stepEPT(double t, double dt)
+{
+
+}
+
 //------------------------------------------------------------------------------
 // Загрузка конфига
 //------------------------------------------------------------------------------
@@ -502,6 +536,14 @@ void EP20::loadConfig(QString cfg_path)
 void EP20::keyProcess()
 {
     //    pantograph[PANT_AC1]->setState(getKeyState(KEY_P));
+    if (getKeyState(KEY_V))
+    {
+        if (isShift())
+            ept_switch.set();
+        else
+            ept_switch.reset();
+    }
+
 }
 
 void EP20::load_brakes_config(QString path)

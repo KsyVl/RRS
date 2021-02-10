@@ -235,7 +235,7 @@ private:
     EPTConverter    *ept_converter;
 
     /// Блок управления ЭПТ
-    EPTPassControl  *ept_pass_control;
+    EPTPassControl  *      ept_pass_control;
 
     /// Электровоздухораспределитель
     ElectroAirDistributor *electroAirDist;

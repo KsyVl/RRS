@@ -109,6 +109,8 @@ void EP20::stepSignals(double t, double dt)
     //??? возможно пренадлежит индикации состояния ЭПТ(кружочкам)
     //analogSignal[MPSU_U] = ;
 
+//    analogSignal[MPSU_EPT_ON_OFF] = static_cast<float>(ept_switch.getState());
+
     //род тока
     int cur_type = 0;
     for (auto pant = pantograph.begin(); pant != pantograph.end(); ++pant)
@@ -134,7 +136,7 @@ void EP20::stepSignals(double t, double dt)
 
     // I и U в состоянии ЭПТ
     analogSignal[MPSU_outputI] = 0.2;
-    analogSignal[MPSU_outputU] = 3;
+    analogSignal[MPSU_outputU] = 110;
 
 
        // Сигнал СОПТ!

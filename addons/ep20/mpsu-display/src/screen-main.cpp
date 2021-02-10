@@ -97,7 +97,7 @@ void ScreenMain::updateScreen(screen_data_t* data)
                                 " В");
 
     // состояние ЭПТ
-    updateStateEPT_(smt->outputI, smt->outputU, false, true, true);
+    updateStateEPT_(smt->outputI, smt->outputU, false, false, false);
 
     // нагрузка ТПр
     loadTC_->setValues(smt->ltct);
