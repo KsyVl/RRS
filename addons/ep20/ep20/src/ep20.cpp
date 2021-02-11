@@ -514,7 +514,30 @@ void EP20::stepTractionDrive(double t, double dt)
 
 void EP20::stepEPT(double t, double dt)
 {
+    ept_converter->setU_bat(110);
+    ept_converter->setI_out(ept_current[0]);
+    ept_converter->step(t, dt);
 
+    ept_pass_control->setHoldState(krm->isHold());
+    ept_pass_control->setBrakeState(krm->isBrake());
+    ept_pass_control->step(t, dt);
+
+    ept_control[0] = ept_pass_control->getControlSignal();
+
+    if (prev_vehicle != nullptr)
+    {
+        ept_control[0] = prev_vehicle->getEPTControl(0);
+    }
+
+    ept_current[0] = 0;
+
+    if (next_vehicle != nullptr)
+    {
+        ept_current[0] += next_vehicle->getEPTCurrent(0);
+        next_vehicle->setEPTControl(0, ept_control[0]);
+    }
+
+    ept_current[0] += electroAirDistr->getValveState(0) + electroAirDistr->getValveState(1);
 }
 
 //------------------------------------------------------------------------------

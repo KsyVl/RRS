@@ -114,7 +114,7 @@ private:
     void createStateEPT_();
     void updateStateEPT_(double I, int U, bool light1, bool light2, bool light3);
 
-    void drawCircleStatusIndicator_(QPainter &paint, int posX, int w, bool light);
+    void drawCircleStatusIndicator_(QPainter &paint, int posX, int w, bool light, QColor color);
 
     void createPressures_(int posX, int posY);
 

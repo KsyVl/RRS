@@ -97,7 +97,7 @@ void ScreenMain::updateScreen(screen_data_t* data)
                                 " В");
 
     // состояние ЭПТ
-    updateStateEPT_(smt->outputI, smt->outputU, false, false, false);
+    updateStateEPT_(smt->outputI, smt->outputU, smt->updateStateEPT_light1, smt->updateStateEPT_light2, smt->updateStateEPT_light3);
 
     // нагрузка ТПр
     loadTC_->setValues(smt->ltct);
@@ -338,9 +338,9 @@ void ScreenMain::updateStateEPT_(double I, int U, bool light1, bool light2, bool
     paint.setRenderHint(QPainter::Antialiasing, true);
 
     int circleW = labStateIndicator_->height();
-    drawCircleStatusIndicator_(paint, circleW/2, circleW, light1);
-    drawCircleStatusIndicator_(paint, circleW/2*3 + 1, circleW, light2);
-    drawCircleStatusIndicator_(paint, circleW/2*5 + 2, circleW, light3);
+    drawCircleStatusIndicator_(paint, circleW/2, circleW, light1, Qt::white);
+    drawCircleStatusIndicator_(paint, circleW/2*3 + 1, circleW, light2, Qt::yellow);
+    drawCircleStatusIndicator_(paint, circleW/2*5 + 2, circleW, light3, Qt::red);
 
     paint.end();
     labStateIndicator_->setPixmap(pix);
@@ -349,7 +349,7 @@ void ScreenMain::updateStateEPT_(double I, int U, bool light1, bool light2, bool
 //-----------------------------------------------------------------------------
 //
 //-----------------------------------------------------------------------------
-void ScreenMain::drawCircleStatusIndicator_(QPainter &paint, int posX, int w, bool light)
+void ScreenMain::drawCircleStatusIndicator_(QPainter &paint, int posX, int w, bool light, QColor color)
 {
     // внешний круг
     paint.setPen(QPen( Qt::white,
@@ -361,7 +361,7 @@ void ScreenMain::drawCircleStatusIndicator_(QPainter &paint, int posX, int w, bo
     if (light)
     {
         // внутренний круг
-        paint.setPen(QPen( Qt::gray,
+        paint.setPen(QPen( color,
                            w - 8,
                            Qt::SolidLine,
                            Qt::RoundCap ));

@@ -321,6 +321,9 @@ struct screen_main_t : screen_data_t
     // ток и напряжение на выходе источника питания ЭПТ
     double  outputI;
     int     outputU;
+    bool updateStateEPT_light1;
+    bool updateStateEPT_light2;
+    bool updateStateEPT_light3;
 
     //
     load_traction_converter_t ltct;
